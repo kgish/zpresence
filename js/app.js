@@ -10,8 +10,10 @@ App.ApplicationAdapter = DS.FixtureAdapter;
 /** ROUTER **/
 App.Router.map(function(){
   this.resource('users', function(){
-    this.resource('user', { path:'/:user_id' }, function(){
-      this.route('edit');
+    this.resource('user', { path: '/:user_id' }, function(){
+        this.resource('channel', { path: '/channel/:channel_id' }, function() {
+            this.route('edit');
+        });
     });
     this.route('create');
   });
@@ -37,7 +39,6 @@ App.UserRoute = Ember.Route.extend({
     }
 });
 
-
 /** CONTROLLERS **/
 App.UsersController = Ember.ArrayController.extend({
     sortProperties: ['email'],
@@ -50,7 +51,23 @@ App.UsersController = Ember.ArrayController.extend({
 App.UserController = Ember.ObjectController.extend({
     channelsCount: function(){
         return this.get('channels.length');
-    }.property('@each')
+    }.property('@each'),
+    actions: {
+        edit: function(){
+            this.transitionToRoute('user.edit');
+    }
+  }
+});
+
+App.ChannelEditController = Ember.ObjectController.extend({
+  statusList : ['online','available','away','busy','blocked','offline','unknown'],
+  actions: {
+    save: function(){
+      var user = this.get('model');
+      user.save();
+      this.transitionToRoute('user', user);
+    }
+  }
 });
 
 

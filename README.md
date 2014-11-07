@@ -4,6 +4,8 @@ A simple Presence Dashboard for Zarafa built using the [Ember.js](http://www.emb
 
 This can be used as a web client for testing the new Zarafa Presence Daemon built by Mark Dufour.
 
+The initial version uses fixture data for the mockup, but it can be easily extended to include the `RESTAdapter`.
+
 ![](images/screenshot.png?raw=true)
 
 ## Instructions
