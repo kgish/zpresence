@@ -88,5 +88,5 @@ Kiffin Gish <k.gish@zarafa.com>
 
 ## Thanks
 
-A special thanks go to Mark Dufour and the kind folks at (ember.js)[http://www.emberjs.com] for helping me out.
+A special thanks go to Mark Dufour and the kind folks at [ember.js](http://www.emberjs.com) for helping me out.
 
