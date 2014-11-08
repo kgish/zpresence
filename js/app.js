@@ -43,14 +43,14 @@ App.UserRoute = Ember.Route.extend({
 
 /** CONTROLLERS **/
 App.UsersController = Ember.ArrayController.extend({
-    sortProperties: ['email'],
+    sortProperties: ['name'],
     sortAscending: true,
     usersCount: function(){
         return this.get('model.length');
     }.property('@each'),
     actions: {
         newUser: function() {
-            alert('NEW USER');
+            this.transitionToRoute('users.new');
         }
     }
 });
@@ -63,21 +63,28 @@ App.UserController = Ember.ObjectController.extend({
     }.property('@each'),
     actions: {
         edit: function(){
+            alert('EDIT');
             this.transitionToRoute('user.edit');
+        },
+        newChannel: function() {
+            alert('NEW CHANNEL');
         }
     }
 });
 
 App.ChannelEditController = Ember.ObjectController.extend({
+    editMode: false,
     statusList : ['online','available','away','busy','blocked','offline','unknown'],
     actions: {
         saveChannelEdit: function(){
             var channel = this.get('model');
+            this.set('editMode', false);
             this.transitionToRoute('user', channel.get('user'));
         },
         cancelChannelEdit: function(){
             var channel = this.get('model');
             channel.rollback();
+            this.set('editMode', false);
             this.transitionToRoute('user', channel.get('user'));
     }
   }
