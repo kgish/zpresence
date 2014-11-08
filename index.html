@@ -48,7 +48,7 @@
     <script type="text/x-handlebars" data-template-name="user">
         <div class="row">
             <div class="col-md-6">
-                <h1>{{email}} :: {{channelsCount}}</h1>
+                <h1>{{email}} :: {{channels.length}} Channel(s)</h1>
                 <div class="list-group">
                     {{#each channel in channels}}
                         {{#link-to 'channel.edit' channel class="list-group-item"}}
@@ -76,7 +76,7 @@
     <script type="text/x-handlebars" data-template-name="channel/edit">
         <div class="row">
             <div class="col-md-10">
-                <h1>{{name}}</h1>
+                <h1>{{name}} :: Edit</h1>
                 <div class="list-group">
                     <form class="form-horizontal" role="form">
                         <div class="list-group-item">
@@ -94,7 +94,10 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-default" {{action "save"}}>Save</button>
+                                <button type="button" class="btn btn-default btn-sm" {{action "saveChannelEdit"}}>
+                                    <span class="glyphicon glyphicon-ok"></span> Ok
+                                </button>
+                                &nbsp;&nbsp;<a href="#" {{action "cancelChannelEdit"}}>Cancel</a>
                             </div>
                         </div>
                     </form>

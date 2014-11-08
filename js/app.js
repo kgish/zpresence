@@ -55,17 +55,22 @@ App.UserController = Ember.ObjectController.extend({
     actions: {
         edit: function(){
             this.transitionToRoute('user.edit');
+        }
     }
-  }
 });
 
 App.ChannelEditController = Ember.ObjectController.extend({
-  statusList : ['online','available','away','busy','blocked','offline','unknown'],
-  actions: {
-    save: function(){
-      var user = this.get('model');
-      user.save();
-      this.transitionToRoute('user', user);
+    statusList : ['online','available','away','busy','blocked','offline','unknown'],
+    actions: {
+        saveChannelEdit: function(){
+            var user = this.get('model').user;
+            this.transitionToRoute('user', user);
+        },
+        cancelChannelEdit: function(){
+            var channel = this.get('model');
+            var user = channel.user;
+            channel.rollback();
+            this.transitionToRoute('user', user);
     }
   }
 });
@@ -124,3 +129,8 @@ App.ChannelName.reopenClass({
     ]
 });
 
+/** HANDLEBARS HELPERS **/
+// usage: {{pluralize collection.length 'quiz' 'quizzes'}}
+Handlebars.registerHelper('pluralize', function(number, single, plural) {
+    return (number === 1) ? single : plural;
+});
