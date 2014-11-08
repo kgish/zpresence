@@ -29,16 +29,21 @@
             <div class="col-md-4">
                 <h1>
                     Users :: {{usersCount}}
-                    <button type="button" class="btn btn-default" {{action "newUser"}}>
-                        <span class="glyphicon glyphicon-user"></span> New User
+                    <button type="button" class="btn btn-default" {{action "userCreate"}}>
+                        <span class="glyphicon glyphicon-user"></span> Create User
                     </button>
                 </h1>
                 <div class="list-group">
                     {{#each user in controller}}
-                        {{#link-to 'user' user class="list-group-item"}}{{user.name}}{{/link-to}}
+                        <div class="list-group-item">
+                            {{#link-to 'user' user}}{{user.name}}{{/link-to}}
+                            <button type="button" class="btn btn-default" {{action "userEdit"}}>
+                                <span class="glyphicon glyphicon-edit"></span> Edit User
+                            </button>
+                        </div>
                     {{else}}
                         <div class="list-group-item">
-                            No users
+                            There are no users
                         </div>
                     {{/each}}
                 </div>
@@ -50,7 +55,7 @@
         </div>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="users/new">
+    <script type="text/x-handlebars" data-template-name="users/create">
         <div class="row">
             <div class="col-md-6">
                 <h1>New User</h1>
@@ -71,10 +76,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" class="btn btn-default btn-sm" {{action "saveUserNew"}}>
+                                    <button type="button" class="btn btn-default btn-sm" {{action "saveUserCreate"}}>
                                     <span class="glyphicon glyphicon-ok"></span> Ok
                                     </button>
-                                    <a href="#" {{action "cancelUserNew"}}>Cancel</a>
+                                    <a href="#" {{action "cancelUserCreate"}}>Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -91,8 +96,8 @@
             <div class="col-md-6">
                 <h1>
                     {{email}} :: {{channelsCount}}
-                    <button type="button" class="btn btn-default" {{action "newChannel"}}>
-                        <span class="glyphicon glyphicon-star"></span> New Channel
+                    <button type="button" class="btn btn-default" {{action "channelCreate"}}>
+                        <span class="glyphicon glyphicon-star"></span> Create Channel
                     </button>
                 </h1>
                 <div class="list-group">

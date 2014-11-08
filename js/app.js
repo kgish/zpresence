@@ -10,14 +10,13 @@ App.ApplicationAdapter = DS.FixtureAdapter;
 /** ROUTER **/
 App.Router.map(function(){
   this.resource('users', function(){
-    this.route('new');
+    this.route('create');
     this.resource('user', { path: '/:user_id' }, function(){
         this.route('edit');
         this.resource('channel', { path: '/channel/:channel_id' }, function() {
             this.route('edit');
         });
     });
-    this.route('create');
   });
 });
 
@@ -49,8 +48,8 @@ App.UsersController = Ember.ArrayController.extend({
         return this.get('model.length');
     }.property('@each'),
     actions: {
-        newUser: function() {
-            this.transitionToRoute('users.new');
+        userCreate: function() {
+            this.transitionToRoute('users.create');
         }
     }
 });
@@ -62,12 +61,26 @@ App.UserController = Ember.ObjectController.extend({
         return this.get('channels.length');
     }.property('@each'),
     actions: {
-        edit: function(){
-            alert('EDIT');
+        userEdit: function(){
+            alert('EDIT USER');
             this.transitionToRoute('user.edit');
         },
-        newChannel: function() {
-            alert('NEW CHANNEL');
+        channelCreate: function() {
+            alert('CREATE CHANNEL');
+        }
+    }
+});
+
+App.UsersCreateController = Ember.ObjectController.extend({
+    createMode: false,
+    actions: {
+        saveUserCreate: function(){
+            this.set('createMode', false);
+            this.transitionToRoute('users');
+        },
+        cancelUserCreate: function(){
+            this.set('createMode', false);
+            this.transitionToRoute('users');
         }
     }
 });
