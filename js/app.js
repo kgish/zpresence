@@ -10,7 +10,9 @@ App.ApplicationAdapter = DS.FixtureAdapter;
 /** ROUTER **/
 App.Router.map(function(){
   this.resource('users', function(){
+    this.route('new');
     this.resource('user', { path: '/:user_id' }, function(){
+        this.route('edit');
         this.resource('channel', { path: '/channel/:channel_id' }, function() {
             this.route('edit');
         });
@@ -45,10 +47,17 @@ App.UsersController = Ember.ArrayController.extend({
     sortAscending: true,
     usersCount: function(){
         return this.get('model.length');
-    }.property('@each')
+    }.property('@each'),
+    actions: {
+        newUser: function() {
+            alert('NEW USER');
+        }
+    }
 });
 
 App.UserController = Ember.ObjectController.extend({
+    sortProperties: ['name'],
+    sortAscending: true,
     channelsCount: function(){
         return this.get('channels.length');
     }.property('@each'),
@@ -63,14 +72,13 @@ App.ChannelEditController = Ember.ObjectController.extend({
     statusList : ['online','available','away','busy','blocked','offline','unknown'],
     actions: {
         saveChannelEdit: function(){
-            var user = this.get('model').user;
-            this.transitionToRoute('user', user);
+            var channel = this.get('model');
+            this.transitionToRoute('user', channel.get('user'));
         },
         cancelChannelEdit: function(){
             var channel = this.get('model');
-            var user = channel.user;
             channel.rollback();
-            this.transitionToRoute('user', user);
+            this.transitionToRoute('user', channel.get('user'));
     }
   }
 });
@@ -84,10 +92,10 @@ App.User = DS.Model.extend({
 });
 
 App.Channel = DS.Model.extend({
-    user: DS.belongsTo('user'),
     name: DS.attr('string'),
     status: DS.attr('string', {defaultValue: 'unknown'}),
-    message: DS.attr('string', {defaultValue: '<none>'})
+    message: DS.attr('string', {defaultValue: '<none>'}),
+    user: DS.belongsTo('user', {async: true})
 });
 
 App.ChannelName = DS.Model.extend({
