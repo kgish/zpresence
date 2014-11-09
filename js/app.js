@@ -51,7 +51,7 @@ App.ApplicationController = Ember.ObjectController.extend({
 });
 
 App.UsersController = Ember.ArrayController.extend({
-    editting: false,
+    editFlag: false,
     sortProperties: ['name'],
     sortAscending: true,
     usersCount: function(){
@@ -60,6 +60,10 @@ App.UsersController = Ember.ArrayController.extend({
     actions: {
         create: function() {
             this.transitionToRoute('users.create');
+        },
+        edit: function(user) {
+            alert('EDIT');
+            this.transitionToRoute('user.edit', user);
         }
     }
 });
@@ -90,12 +94,21 @@ App.UserEditController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
-    userName: '',
-    userEmail: '',
+    name: '',
+    email: '',
     actions: {
         save: function(){
-            var name = this.get('userName'),
-                email = this.get('userEmail');
+            var name = this.get('name'),
+                email = this.get('email');
+
+            var user = this.store.createRecord('user', {
+                name: name,
+                email: email
+            });
+
+            user.save();
+            this.set('name', '');
+            this.set('email', '');
             this.transitionToRoute('users');
         },
         cancel: function(){

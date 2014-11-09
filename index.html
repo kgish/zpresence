@@ -31,14 +31,14 @@
                     Users :: {{usersCount}}
                 </h1>
                 <div class="list-group">
-                    {{#link-to 'user' user class="list-group-item"}}
+                    <div class="list-group-item">
                         <button type="button" class="btn btn-primary" {{action "create"}}>
                             <span class="glyphicon glyphicon-user"></span> New User
                         </button>
-                    {{/link-to}}
+                    </div>
                     {{#each user in controller}}
                         {{#link-to 'user' user class="list-group-item"}}
-                            <button type="button" class="btn btn-default btn-xs" {{action "edit"}}>
+                            <button type="button" class="btn btn-default btn-xs" {{action "edit" user}}>
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                             <span class="badge">{{user.channels.length}}</span>
@@ -65,11 +65,11 @@
                     {{email}} :: {{channelsCount}}
                 </h1>
                 <div class="list-group">
-                    {{#link-to 'user' user class="list-group-item"}}
+                    <div class="list-group-item">
                         <button type="button" class="btn btn-primary" {{action "create"}}>
                             <span class="glyphicon glyphicon-star"></span> New Channel
                         </button>
-                    {{/link-to}}
+                    </div>
                     {{#each channel in channels}}
                         {{#link-to 'channel.edit' channel class="list-group-item"}}
                             <strong>{{channel.name}}</strong>
