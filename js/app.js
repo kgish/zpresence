@@ -94,12 +94,23 @@ App.UserEditController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
+    re : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     name: '',
     email: '',
     actions: {
         save: function(){
             var name = this.get('name'),
                 email = this.get('email');
+
+            if (name.length == 0) {
+                alert('Please enter a valid name.');
+                return false;
+            }
+
+            if (!this.re.test(email)) {
+                alert('Please enter a valid email.');
+                return false;
+            }
 
             var user = this.store.createRecord('user', {
                 name: name,
