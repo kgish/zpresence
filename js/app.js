@@ -58,7 +58,7 @@ App.UsersController = Ember.ArrayController.extend({
         return this.get('model.length');
     }.property('@each'),
     actions: {
-        delete: function(user) {
+        deleteUser: function(user) {
             var id = user.get('id'),
                 name = user.get('name');
             if (confirm('Are you sure you want to delete user "'+name+'" ('+id+') ?')) {
@@ -67,13 +67,8 @@ App.UsersController = Ember.ArrayController.extend({
             }
             this.transitionToRoute('users');
         },
-        create: function() {
-            alert('UsersController action CREATE');
+        createUser: function() {
             this.transitionToRoute('users.create');
-        },
-        edit: function(user) {
-            alert('UsersController action EDIT');
-            this.transitionToRoute('user.edit', user);
         }
     }
 });
@@ -85,16 +80,15 @@ App.UserController = Ember.ObjectController.extend({
         return this.get('channels.length');
     }.property('channels.length'),
     actions: {
-        create: function(){
+        editUser: function(){
+            this.transitionToRoute('user.edit');
+        },
+        createChannel: function(){
             alert('UserController action CREATE');
             return false;
             //this.transitionToRoute('users');
         },
-        edit: function(){
-            alert('UserController action EDIT');
-            this.transitionToRoute('users');
-        },
-        delete: function(channel){
+        deleteChannel: function(channel){
             var id = channel.get('id'),
                 name = channel.get('name'),
                 user = channel.get('user');
@@ -110,10 +104,13 @@ App.UserController = Ember.ObjectController.extend({
 App.UserEditController = Ember.ObjectController.extend({
     actions: {
         save: function(){
-            this.transitionToRoute('users');
+            var user = this.get('model');
+            this.transitionToRoute('user', user);
         },
         cancel: function(){
-            this.transitionToRoute('users');
+            var user = this.get('model');
+            user.rollback();
+            this.transitionToRoute('user', user);
         }
     }
 });

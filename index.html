@@ -32,16 +32,13 @@
                 </h1>
                 <div class="list-group">
                     <div class="list-group-item">
-                        <button type="button" class="btn btn-primary" title="Create a new user" {{action "create"}}>
+                        <button type="button" class="btn btn-primary" title="Create a new user" {{action "createUser"}}>
                             <span class="glyphicon glyphicon-user"></span> New User
                         </button>
                     </div>
                     {{#each user in controller}}
                         {{#link-to 'user' user class="list-group-item"}}
-                            <button type="button" class="btn btn-default btn-xs" title="Edit this user" {{action "edit" user}}>
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-xs" title="Delete this user" {{action "delete" user}}>
+                            <button type="button" class="btn btn-default btn-xs" title="Delete this user" {{action "deleteUser" user}}>
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                             <span class="badge">{{channelsCount}}</span>
@@ -69,13 +66,16 @@
                 </h1>
                 <div class="list-group">
                     <div class="list-group-item">
-                        <button type="button" class="btn btn-primary" title="Create a new channel" {{action "create"}}>
+                        <button type="button" class="btn btn-primary" title="Edit this user" {{action "editUser"}}>
+                            <span class="glyphicon glyphicon-user"></span> Edit User
+                        </button>
+                        <button type="button" class="btn btn-primary" title="Create a new channel" {{action "createChannel"}}>
                             <span class="glyphicon glyphicon-star"></span> New Channel
                         </button>
                     </div>
                     {{#each channel in channels}}
                         {{#link-to 'channel.edit' channel class="list-group-item"}}
-                            <button type="button" class="btn btn-default btn-xs" title="Delete this channel" {{action "delete" channel}}>
+                            <button type="button" class="btn btn-default btn-xs" title="Delete this channel" {{action "deleteChannel" channel}}>
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                             {{channel.name}}
