@@ -17,7 +17,7 @@
 
     <script type="text/x-handlebars" data-template-name="application">
         <div id="headerArea">
-            <img src="images/zarafa-logo.png" /><h1>{{appName}} - {{appVersion}}</h1>
+            <img src="images/zarafa-logo.png" /><h1>{{appName}} / {{appVersion}}</h1>
         </div>
         <div id="mainArea">
             {{outlet}}
@@ -32,13 +32,13 @@
                 </h1>
                 <div class="list-group">
                     {{#link-to 'user' user class="list-group-item"}}
-                        <button type="button" class="btn btn-primary" {{action "userCreate"}}>
+                        <button type="button" class="btn btn-primary" {{action "create"}}>
                             <span class="glyphicon glyphicon-user"></span> New User
                         </button>
                     {{/link-to}}
                     {{#each user in controller}}
                         {{#link-to 'user' user class="list-group-item"}}
-                            <button type="button" class="btn btn-default btn-xs" {{action "userEdit"}}>
+                            <button type="button" class="btn btn-default btn-xs" {{action "edit"}}>
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                             <span class="badge">{{user.channels.length}}</span>
@@ -66,7 +66,7 @@
                 </h1>
                 <div class="list-group">
                     {{#link-to 'user' user class="list-group-item"}}
-                        <button type="button" class="btn btn-primary" {{action "channelCreate"}}>
+                        <button type="button" class="btn btn-primary" {{action "create"}}>
                             <span class="glyphicon glyphicon-star"></span> New Channel
                         </button>
                     {{/link-to}}
@@ -93,40 +93,55 @@
         </div>
     </script>
 
-
     <script type="text/x-handlebars" data-template-name="users/create">
         <div class="row">
             <div class="col-md-6">
                 <h1>New User</h1>
-                <div class="list-group">
-                    <form class="form-horizontal" role="form">
-                        <div class="list-group-item">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
-                                <div class="col-sm-10">
-                                    {{input class="form-control" placeholder="Name"}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Email</label>
-                                <div class="col-sm-10">
-                                    {{input class="form-control" placeholder="Email"}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" class="btn btn-primary btn-sm" {{action "saveUserCreate"}}>
-                                    <span class="glyphicon glyphicon-ok"></span> Ok
-                                    </button>
-                                    <a href="#" {{action "cancelUserCreate"}}>Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                {{partial 'user/form'}}
             </div>
             <div class="col-md-6">
             </div>
+        </div>
+    </script>
+
+
+    <script type="text/x-handlebars" data-template-name="user/edit">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Edit User</h1>
+                {{partial 'user/form'}}
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user/_form">
+        <div class="list-group">
+            <form class="form-horizontal" role="form">
+                <div class="list-group-item">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            {{input class="form-control" placeholder="Name" value=name}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            {{input class="form-control" placeholder="Email" value=email}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-primary btn-sm" {{action "save"}}>
+                            <span class="glyphicon glyphicon-ok"></span> Ok
+                            </button>
+                            <a href="#" {{action "cancel"}}>Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </script>
 
@@ -151,10 +166,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" class="btn btn-primary tbtn-sm" {{action "saveChannelEdit"}}>
+                                    <button type="button" class="btn btn-primary tbtn-sm" {{action "save"}}>
                                         <span class="glyphicon glyphicon-ok"></span> Ok
                                     </button>
-                                    <a href="#" {{action "cancelChannelEdit"}}>Cancel</a>
+                                    <a href="#" {{action "cancel"}}>Cancel</a>
                                 </div>
                             </div>
                         </div>

@@ -51,14 +51,14 @@ App.ApplicationController = Ember.ObjectController.extend({
 });
 
 App.UsersController = Ember.ArrayController.extend({
-    editMode: false,
+    editting: false,
     sortProperties: ['name'],
     sortAscending: true,
     usersCount: function(){
         return this.get('model.length');
     }.property('@each'),
     actions: {
-        userCreate: function() {
+        create: function() {
             this.transitionToRoute('users.create');
         }
     }
@@ -71,21 +71,34 @@ App.UserController = Ember.ObjectController.extend({
         return this.get('channels.length');
     }.property('@each'),
     actions: {
-        channelCreate: function() {
-            alert('CREATE CHANNEL');
+        edit: function(){
+            alert('USER EDIT');
+            this.transitionToRoute('user.edit');
+        }
+    }
+});
+
+App.UserEditController = Ember.ObjectController.extend({
+    actions: {
+        save: function(){
+            this.transitionToRoute('users');
+        },
+        cancel: function(){
+            this.transitionToRoute('users');
         }
     }
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
+    userName: '',
+    userEmail: '',
     actions: {
-        saveUserCreate: function(){
-            alert('User Create - SAVE');
-            var user = this.modelFor('user');
+        save: function(){
+            var name = this.get('userName'),
+                email = this.get('userEmail');
             this.transitionToRoute('users');
         },
-        cancelUserCreate: function(){
-            alert('User Create - CANCEL');
+        cancel: function(){
             this.transitionToRoute('users');
         }
     }
@@ -94,11 +107,11 @@ App.UsersCreateController = Ember.ObjectController.extend({
 App.ChannelEditController = Ember.ObjectController.extend({
     statusList : ['online','available','away','busy','blocked','offline','unknown'],
     actions: {
-        saveChannelEdit: function(){
+        save: function(){
             var channel = this.get('model');
             this.transitionToRoute('user', channel.get('user'));
         },
-        cancelChannelEdit: function(){
+        cancel: function(){
             var channel = this.get('model');
             channel.rollback();
             this.transitionToRoute('user', channel.get('user'));
