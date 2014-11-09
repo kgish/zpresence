@@ -190,7 +190,7 @@ App.ChannelName = DS.Model.extend({
 App.User.reopenClass({
     FIXTURES: [
         { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [101, 102] },
-        { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [103, 104] },
+        { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [103, 104, 108] },
         { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [105]     },
         { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [106, 107] }
     ]
@@ -204,7 +204,8 @@ App.Channel.reopenClass({
         { id: 104, user: 2, name: 'voip',     status: 'busy',         message: 'Went to the toilet'   },
         { id: 105, user: 3, name: 'skype',    status: 'away',         message: 'At the lunch meeting' },
         { id: 106, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!'         },
-        { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   }
+        { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   },
+        { id: 108, user: 2, name: 'spreed',   status: 'blocked',      message: 'Do not disturb me'    }
     ]
 });
 
