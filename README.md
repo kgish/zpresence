@@ -12,6 +12,9 @@ The initial version uses fixture data for the mockup, but it can be easily exten
 
 ```
 $ git clone git@github.com:kgish/zpresence.git
+$ cd zpresence
+$ python -m SimpleHTTPServer
+$ firefox localhost:8000
 ```
 
 ## REST API
