@@ -58,9 +58,14 @@ App.UsersController = Ember.ArrayController.extend({
         return this.get('model.length');
     }.property('@each'),
     actions: {
-        delete: function() {
-            alert('UsersController action DELETE');
-            return false;
+        delete: function(user) {
+            var id = user.get('id'),
+                name = user.get('name');
+            if (confirm('Are you sure you want to delete user "'+name+'" ('+id+') ?')) {
+                // => DELETE to /users/user_id
+                user.destroyRecord();
+            }
+            this.transitionToRoute('users');
         },
         create: function() {
             alert('UsersController action CREATE');
@@ -78,7 +83,7 @@ App.UserController = Ember.ObjectController.extend({
     sortAscending: true,
     channelsCount: function(){
         return this.get('channels.length');
-    }.property('@each'),
+    }.property('channels.length'),
     actions: {
         create: function(){
             alert('UserController action CREATE');
@@ -90,9 +95,14 @@ App.UserController = Ember.ObjectController.extend({
             this.transitionToRoute('users');
         },
         delete: function(channel){
-            alert('UserController action DELETE channel='+channel.id);
-            return false;
-            //this.transitionToRoute('users');
+            var id = channel.get('id'),
+                name = channel.get('name'),
+                user = channel.get('user');
+            if (confirm('Are you sure you want to delete channel "'+name+'" ('+id+') ?')) {
+                // => DELETE to /users/user_id/channel/channel_id
+                channel.destroyRecord();
+            }
+            this.transitionToRoute('user', user);
         }
     }
 });
