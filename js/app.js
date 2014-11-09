@@ -113,6 +113,7 @@ App.UsersCreateController = Ember.ObjectController.extend({
             }
 
             var user = this.store.createRecord('user', {
+                id: this.get('model.length') + 1,
                 name: name,
                 email: email
             });
@@ -175,25 +176,25 @@ App.User.reopenClass({
 
 App.Channel.reopenClass({
     FIXTURES: [
-        { id: 11, user: 1, name: 'xmpp',     status: 'busy',         message: 'Go away!'             },
-        { id: 12, user: 1, name: 'spreed',   status: 'unknown',      message: ''                     },
-        { id: 13, user: 2, name: 'xmpp',     status: 'available',    message: 'Bring it on!'         },
-        { id: 14, user: 2, name: 'voip',     status: 'busy',         message: 'Went to the toilet'   },
-        { id: 15, user: 3, name: 'skype',    status: 'away',         message: 'At the lunch meeting' },
-        { id: 16, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!'         },
-        { id: 17, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   }
+        { id: 101, user: 1, name: 'xmpp',     status: 'busy',         message: 'Go away!'             },
+        { id: 102, user: 1, name: 'spreed',   status: 'unknown',      message: ''                     },
+        { id: 103, user: 2, name: 'xmpp',     status: 'available',    message: 'Bring it on!'         },
+        { id: 104, user: 2, name: 'voip',     status: 'busy',         message: 'Went to the toilet'   },
+        { id: 105, user: 3, name: 'skype',    status: 'away',         message: 'At the lunch meeting' },
+        { id: 106, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!'         },
+        { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   }
     ]
 });
 
 App.ChannelName.reopenClass({
     FIXTURES: [
-        { id: 21, name: 'xmpp'     },
-        { id: 22, name: 'spreed'   },
-        { id: 23, name: 'voip'     },
-        { id: 24, name: 'skype'    },
-        { id: 25, name: 'facebook' },
-        { id: 26, name: 'google+'  },
-        { id: 27, name: 'whatsapp' }
+        { id: 201, name: 'xmpp'     },
+        { id: 202, name: 'spreed'   },
+        { id: 203, name: 'voip'     },
+        { id: 204, name: 'skype'    },
+        { id: 205, name: 'facebook' },
+        { id: 206, name: 'google+'  },
+        { id: 207, name: 'whatsapp' }
     ]
 });
 
