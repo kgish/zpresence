@@ -58,11 +58,16 @@ App.UsersController = Ember.ArrayController.extend({
         return this.get('model.length');
     }.property('@each'),
     actions: {
+        delete: function() {
+            alert('UsersController action DELETE');
+            return false;
+        },
         create: function() {
+            alert('UsersController action CREATE');
             this.transitionToRoute('users.create');
         },
         edit: function(user) {
-            alert('EDIT');
+            alert('UsersController action EDIT');
             this.transitionToRoute('user.edit', user);
         }
     }
@@ -75,9 +80,19 @@ App.UserController = Ember.ObjectController.extend({
         return this.get('channels.length');
     }.property('@each'),
     actions: {
+        create: function(){
+            alert('UserController action CREATE');
+            return false;
+            //this.transitionToRoute('users');
+        },
         edit: function(){
-            alert('USER EDIT');
-            this.transitionToRoute('user.edit');
+            alert('UserController action EDIT');
+            this.transitionToRoute('users');
+        },
+        delete: function(channel){
+            alert('UserController action DELETE channel='+channel.id);
+            return false;
+            //this.transitionToRoute('users');
         }
     }
 });
@@ -167,10 +182,10 @@ App.ChannelName = DS.Model.extend({
 /** FIXTURES **/
 App.User.reopenClass({
     FIXTURES: [
-        { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [11, 12] },
-        { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [13, 14] },
-        { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [15]     },
-        { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [16, 17] }
+        { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [101, 102] },
+        { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [103, 104] },
+        { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [105]     },
+        { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [106, 107] }
     ]
 });
 
