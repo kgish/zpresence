@@ -45,6 +45,11 @@ App.UserRoute = Ember.Route.extend({
 });
 
 /** CONTROLLERS **/
+App.ApplicationController = Ember.ObjectController.extend({
+    appName:    'Z-Presence Dashboard',
+    appVersion: 'v0.1'
+});
+
 App.UsersController = Ember.ArrayController.extend({
     editMode: false,
     sortProperties: ['name'],
@@ -66,10 +71,6 @@ App.UserController = Ember.ObjectController.extend({
         return this.get('channels.length');
     }.property('@each'),
     actions: {
-        userEdit: function(){
-            alert('EDIT USER');
-            this.transitionToRoute('user.edit');
-        },
         channelCreate: function() {
             alert('CREATE CHANNEL');
         }
@@ -77,21 +78,20 @@ App.UserController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
-    //activate:   function() { alert('UsersCreateController: ACTIVATE'); this.controllerFor('users').set('editMode', true) },
-    //deactivate: function() { alert('UsersCreateController: DEACTIVATE'); this.controllerFor('users').set('editMode', false) },
     actions: {
         saveUserCreate: function(){
+            alert('User Create - SAVE');
+            var user = this.modelFor('user');
             this.transitionToRoute('users');
         },
         cancelUserCreate: function(){
+            alert('User Create - CANCEL');
             this.transitionToRoute('users');
         }
     }
 });
 
 App.ChannelEditController = Ember.ObjectController.extend({
-    //activate:   function() { alert('ChannelEditController: ACTIVATE'); this.controllerFor('users').set('editMode', true) },
-    //deactivate: function() { alert('ChannelEditController: DEACTIVATE'); this.controllerFor('users').set('editMode', false) },
     statusList : ['online','available','away','busy','blocked','offline','unknown'],
     actions: {
         saveChannelEdit: function(){
