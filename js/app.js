@@ -31,6 +31,10 @@ App.IndexRoute = Ember.Route.extend({
 App.UsersRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('user');
+    },
+    redirect: function() {
+        var user = this.modelFor('users').get('firstObject');
+        this.transitionTo('user', user);
     }
 });
 
@@ -42,6 +46,7 @@ App.UserRoute = Ember.Route.extend({
 
 /** CONTROLLERS **/
 App.UsersController = Ember.ArrayController.extend({
+    editMode: false,
     sortProperties: ['name'],
     sortAscending: true,
     usersCount: function(){
@@ -72,35 +77,33 @@ App.UserController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
-    createMode: false,
+    //activate:   function() { alert('UsersCreateController: ACTIVATE'); this.controllerFor('users').set('editMode', true) },
+    //deactivate: function() { alert('UsersCreateController: DEACTIVATE'); this.controllerFor('users').set('editMode', false) },
     actions: {
         saveUserCreate: function(){
-            this.set('createMode', false);
             this.transitionToRoute('users');
         },
         cancelUserCreate: function(){
-            this.set('createMode', false);
             this.transitionToRoute('users');
         }
     }
 });
 
 App.ChannelEditController = Ember.ObjectController.extend({
-    editMode: false,
+    //activate:   function() { alert('ChannelEditController: ACTIVATE'); this.controllerFor('users').set('editMode', true) },
+    //deactivate: function() { alert('ChannelEditController: DEACTIVATE'); this.controllerFor('users').set('editMode', false) },
     statusList : ['online','available','away','busy','blocked','offline','unknown'],
     actions: {
         saveChannelEdit: function(){
             var channel = this.get('model');
-            this.set('editMode', false);
             this.transitionToRoute('user', channel.get('user'));
         },
         cancelChannelEdit: function(){
             var channel = this.get('model');
             channel.rollback();
-            this.set('editMode', false);
             this.transitionToRoute('user', channel.get('user'));
+        }
     }
-  }
 });
 
 
