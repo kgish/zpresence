@@ -2,7 +2,21 @@ App = Ember.Application.create({
     LOG_TRANSITIONS: true,
     LOG_TRANSITIONS_INTERNAL: true,
     LOG_VIEW_LOOKUPS: true,
-    LOG_ACTIVE_GENERATION: true
+    LOG_ACTIVE_GENERATION: true,
+
+    ready: function() {
+        console.log('Application is ready');
+
+        // Seed the modified fields with random dates.
+        var d1 = new Date();
+        var d2 = new Date();
+        var channels = App.Channel.FIXTURES;
+        d1.setMonth(d1.getMonth() - 1);
+
+        channels.forEach(function(channel){
+            channel.modified = new Date(d1.getTime() + Math.random() * (d2.getTime() - d1.getTime()));
+        });
+    }
 });
 
 App.ApplicationAdapter = DS.FixtureAdapter;
@@ -293,6 +307,9 @@ App.Channel = DS.Model.extend({
     name: DS.attr('string'),
     status: DS.attr('string', {defaultValue: 'unknown'}),
     message: DS.attr('string', {defaultValue: '<none>'}),
+    modified: DS.attr('date', {
+        defaultValue: function() { return new Date(); }
+    }),
     user: DS.belongsTo('user', {async: true})
 });
 
@@ -313,14 +330,14 @@ App.User.reopenClass({
 
 App.Channel.reopenClass({
     FIXTURES: [
-        { id: 101, user: 1, name: 'xmpp',     status: 'busy',         message: 'Go away!'             },
-        { id: 102, user: 1, name: 'spreed',   status: 'unknown',      message: ''                     },
-        { id: 103, user: 2, name: 'xmpp',     status: 'available',    message: 'Bring it on!'         },
-        { id: 104, user: 2, name: 'voip',     status: 'busy',         message: 'Went to the toilet'   },
-        { id: 105, user: 3, name: 'skype',    status: 'away',         message: 'At the lunch meeting' },
-        { id: 106, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!'         },
-        { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   },
-        { id: 108, user: 2, name: 'spreed',   status: 'blocked',      message: 'Do not disturb me'    }
+        { id: 101, user: 1, name: 'xmpp',     status: 'busy',         message: 'Go away!',              modified: '' },
+        { id: 102, user: 1, name: 'spreed',   status: 'unknown',      message: '',                      modified: '' },
+        { id: 103, user: 2, name: 'xmpp',     status: 'available',    message: 'Bring it on!',          modified: '' },
+        { id: 104, user: 2, name: 'voip',     status: 'busy',         message: 'Went to the toilet',    modified: '' },
+        { id: 105, user: 3, name: 'skype',    status: 'away',         message: 'At the lunch meeting',  modified: '' },
+        { id: 106, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!',          modified: '' },
+        { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again',    modified: '' },
+        { id: 108, user: 2, name: 'spreed',   status: 'blocked',      message: 'Do not disturb me',     modified: '' }
     ]
 });
 
@@ -340,4 +357,13 @@ App.ChannelName.reopenClass({
 // usage: {{pluralize collection.length 'quiz' 'quizzes'}}
 Handlebars.registerHelper('pluralize', function(number, single, plural) {
     return (number === 1) ? single : plural;
+});
+
+Ember.Handlebars.helper('fromnow', function(context) {
+  console.log("time: " + context);
+    var dd = ""+context;
+    var ss = dd.slice(4,25);
+    return ss;
+//    var mm = new moment(ss,["YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss"]);
+//  return aMomentInTime.format("ddd, h:mmA");
 });
