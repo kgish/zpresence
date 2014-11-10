@@ -207,3 +207,19 @@ div.loginBox h1 {
 .unknown {
     background-color: #5bc0de;
 }
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}
+
+.gray {
+    background-color: gray;
+}

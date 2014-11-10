@@ -13,8 +13,11 @@ App.Router.map(function(){
     this.route('create');
     this.resource('user', { path: '/:user_id' }, function(){
         this.route('edit');
-        this.resource('channel', { path: '/channel/:channel_id' }, function() {
-            this.route('edit');
+        this.resource('channels', function(){
+            this.route('create');
+            this.resource('channel', { path: ':channel_id' }, function() {
+                this.route('edit');
+            });
         });
     });
   });
@@ -44,6 +47,19 @@ App.UserRoute = Ember.Route.extend({
     }
 });
 
+App.ChannelsRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('channel');
+    }
+});
+
+App.ChannelRoute = Ember.Route.extend({
+    model: function(params) {
+        return this.store.find('channel', params.user_id);
+    }
+});
+
+
 /** CONTROLLERS **/
 App.ApplicationController = Ember.ObjectController.extend({
     appName:    'Z-Presence Dashboard',
@@ -57,6 +73,7 @@ App.UsersController = Ember.ArrayController.extend({
     usersCount: function(){
         return this.get('model.length');
     }.property('@each'),
+
     actions: {
         deleteUser: function(user) {
             var id = user.get('id'),
@@ -79,14 +96,13 @@ App.UserController = Ember.ObjectController.extend({
     channelsCount: function(){
         return this.get('channels.length');
     }.property('channels.length'),
+
     actions: {
         editUser: function(){
             this.transitionToRoute('user.edit');
         },
         createChannel: function(){
-            alert('UserController action CREATE');
-            return false;
-            //this.transitionToRoute('users');
+            this.transitionToRoute('channels.create');
         },
         deleteChannel: function(channel){
             var id = channel.get('id'),
@@ -116,20 +132,22 @@ App.UserEditController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
+    // TODO: define helper function validEmail.
     re : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    name: '',
-    email: '',
+    userName: null,
+    userEmail: null,
+
     actions: {
         save: function(){
-            var name = this.get('name'),
-                email = this.get('email');
+            var name = this.get('userName'),
+                email = this.get('userEmail');
 
-            if (name.length == 0) {
+            if (name == null || name.length == 0) {
                 alert('Please enter a valid name.');
                 return false;
             }
 
-            if (!this.re.test(email)) {
+            if (email == null || !this.re.test(email)) {
                 alert('Please enter a valid email.');
                 return false;
             }
@@ -140,9 +158,13 @@ App.UsersCreateController = Ember.ObjectController.extend({
                 email: email
             });
 
+            // PUT /users/create
             user.save();
-            this.set('name', '');
-            this.set('email', '');
+
+            // Clear out the values for next time
+            this.set('name', null);
+            this.set('email', null);
+
             this.transitionToRoute('users');
         },
         cancel: function(){
@@ -151,8 +173,80 @@ App.UsersCreateController = Ember.ObjectController.extend({
     }
 });
 
+App.ChannelsCreateController = Ember.ObjectController.extend({
+    needs: ['user'],
+
+    // TODO: get from store
+    channelList: ['xmpp','spreed','voip','skype','facebook','google+','whatsapp'],
+    statusList : ['online','available','away','busy','blocked','offline','green','yellow','red','grey','unknown'],
+
+    channelName: '',
+    channelStatus: '',
+    channelMessage: '',
+
+    actions: {
+        save: function(){
+            var id      = 0,
+                name    = this.get('channelName'),
+                status  = this.get('channelStatus'),
+                message = this.get('channelMessage'),
+                model   = this.get('model'),
+                user    = this.get('controllers.user.content');
+
+            if (typeof(name) == 'undefined') {
+                alert('Please select a channel name from the list.');
+                return false;
+            }
+
+            if (typeof(status) == 'undefined') {
+                alert('Please select a channel status from the list.');
+                return false;
+            }
+
+            // Get the next highest id, TODO: must be a better way to do this.
+            model.forEach(function(item){
+                var id_next = item.get('id');
+                if (id_next > id) {
+                   id = id_next;
+                }
+            });
+            id++;
+
+            var channel = this.store.createRecord('channel', {
+                id: id,
+                name: name,
+                status: status,
+                message: message
+            });
+
+            // PUT => /users/user_id/channel/create
+            channel.save();
+            user.get('channels').pushObject(channel);
+            user.save();
+
+            // Clear out the values for next time
+            this.set('channelName', '');
+            this.set('channelStatus', '');
+            this.set('channelMessage', '');
+
+            this.transitionToRoute('user', user.get('id'));
+        },
+        cancel: function(){
+            var user = this.get('controllers.user.content');
+
+            // Clear out the values for next time
+            this.set('channelName', '');
+            this.set('channelStatus', '');
+            this.set('channelMessage', '');
+
+            this.transitionToRoute('user', user.get('id'));
+        }
+    }
+});
+
 App.ChannelEditController = Ember.ObjectController.extend({
-    statusList : ['online','available','away','busy','blocked','offline','unknown'],
+    // TODO: get from store
+    statusList : ['online','available','away','busy','blocked','offline','green','yellow','red','grey','unknown'],
     actions: {
         save: function(){
             var channel = this.get('model');
