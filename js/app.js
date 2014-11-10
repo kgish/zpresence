@@ -21,7 +21,7 @@ App.Router.map(function(){
         });
     });
   });
-  this.route('channels');
+  this.route('channel_names', {path: '/channels'});
 });
 
 
@@ -32,9 +32,9 @@ App.IndexRoute = Ember.Route.extend({
     }
 });
 
-App.ChannelssRoute = Ember.Route.extend({
+App.ChannelNamesRoute = Ember.Route.extend({
     model: function() {
-        return this.store.find('channel');
+        return this.store.find('channel_name');
     }
 });
 
@@ -62,13 +62,6 @@ App.ChannelsRoute = Ember.Route.extend({
     }
 });
 
-App.ChannelRoute = Ember.Route.extend({
-    model: function(params) {
-        return this.store.find('channel', params.user_id);
-    }
-});
-
-
 /** CONTROLLERS **/
 App.ApplicationController = Ember.ObjectController.extend({
     appName:    'Z-Presence Dashboard',
@@ -86,7 +79,7 @@ App.IndexController = Ember.ObjectController.extend({
     }
 });
 
-App.ChannelsController = Ember.ArrayController.extend({
+App.ChannelNamesController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     sortAscending: true,
     channelsCount: function(){
