@@ -21,6 +21,7 @@ App.Router.map(function(){
         });
     });
   });
+  this.route('channels');
 });
 
 
@@ -28,6 +29,12 @@ App.Router.map(function(){
 App.IndexRoute = Ember.Route.extend({
     redirect: function() {
         this.transitionTo('users');
+    }
+});
+
+App.ChannelssRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('channel');
     }
 });
 
@@ -66,6 +73,25 @@ App.ChannelRoute = Ember.Route.extend({
 App.ApplicationController = Ember.ObjectController.extend({
     appName:    'Z-Presence Dashboard',
     appVersion: 'v0.1'
+});
+
+App.IndexController = Ember.ObjectController.extend({
+    actions: {
+        gotoUsers: function() {
+           this.transitionToRoute('users');
+        },
+        gotoChannels: function() {
+            this.transitionToRoute('channels');
+        }
+    }
+});
+
+App.ChannelsController = Ember.ArrayController.extend({
+    sortProperties: ['name'],
+    sortAscending: true,
+    channelsCount: function(){
+        return this.get('model.length');
+    }.property('@each')
 });
 
 App.UsersController = Ember.ArrayController.extend({
@@ -285,18 +311,15 @@ App.ChannelName = DS.Model.extend({
 /** FIXTURES **/
 App.User.reopenClass({
     FIXTURES: [
-        /*
         { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [101, 102] },
         { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [103, 104, 108] },
         { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [105]     },
         { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [106, 107] }
-        */
     ]
 });
 
 App.Channel.reopenClass({
     FIXTURES: [
-        /*
         { id: 101, user: 1, name: 'xmpp',     status: 'busy',         message: 'Go away!'             },
         { id: 102, user: 1, name: 'spreed',   status: 'unknown',      message: ''                     },
         { id: 103, user: 2, name: 'xmpp',     status: 'available',    message: 'Bring it on!'         },
@@ -305,7 +328,6 @@ App.Channel.reopenClass({
         { id: 106, user: 4, name: 'whatsapp', status: 'available',    message: 'Whatsapp me!'         },
         { id: 107, user: 4, name: 'google+',  status: 'busy',         message: 'Playing golf again'   },
         { id: 108, user: 2, name: 'spreed',   status: 'blocked',      message: 'Do not disturb me'    }
-        */
     ]
 });
 

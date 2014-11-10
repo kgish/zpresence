@@ -24,6 +24,40 @@
         </div>
     </script>
 
+    <script type="text/x-handlebars" data-template-name="index">
+        <button type="button" class="btn btn-primary" title="Go to users" {{action "gotoUsers"}}>
+            <span class="glyphicon glyphicon-user"></span> Users
+        </button>
+        <button type="button" class="btn btn-primary" title="Go to channels" {{action "gotoChannels"}}>
+        <span class="glyphicon glyphicon-star"></span> Channels
+        </button>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="channels">
+        <div class="row">
+            <div class="col-md-4">
+                <h1>
+                    Channels :: {{channelsCount}}
+                </h1>
+                <div class="list-group">
+                    {{#each channel in controller}}
+                        <div class="list-group-item">
+                            {{channel.name}}
+                        </div>
+                    {{else}}
+                    <div class="list-group-item">
+                        There are no channels
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                {{outlet}}
+            </div>
+        </div>
+    </script>
+
     <script type="text/x-handlebars" data-template-name="users">
         <div class="row">
             <div class="col-md-4">
