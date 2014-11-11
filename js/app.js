@@ -36,7 +36,7 @@ App.Router.map(function(){
         });
     });
   });
-  this.route('channel_names', {path: '/channels'});
+  this.route('channelnames', {path: '/channels'});
 });
 
 
@@ -49,7 +49,7 @@ App.IndexRoute = Ember.Route.extend({
 
 App.ChannelNamesRoute = Ember.Route.extend({
     model: function() {
-        return this.store.find('channel_name');
+        return this.store.find('channelname');
     }
 });
 
@@ -94,7 +94,7 @@ App.IndexController = Ember.ObjectController.extend({
     }
 });
 
-App.ChannelNamesController = Ember.ArrayController.extend({
+App.ChannelnamesController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     sortAscending: true,
     channelsCount: function(){
@@ -154,9 +154,26 @@ App.UserController = Ember.ObjectController.extend({
 });
 
 App.UserEditController = Ember.ObjectController.extend({
+    // TODO: define helper function validEmail.
+    re : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     actions: {
         save: function(){
             var user = this.get('model');
+            var name = user.get('name'),
+                email = user.get('email');
+
+            if (name == null || name.length == 0) {
+                alert('Please enter a valid name.');
+                user.rollback();
+                return false;
+            }
+
+            if (email == null || !this.re.test(email)) {
+                alert('Please enter a valid email.');
+                user.rollback();
+                return false;
+            }
+
             this.transitionToRoute('user', user);
         },
         cancel: function(){
@@ -319,7 +336,7 @@ App.Channel = DS.Model.extend({
     user: DS.belongsTo('user', {async: true})
 });
 
-App.ChannelName = DS.Model.extend({
+App.Channelname = DS.Model.extend({
     name: DS.attr('string')
 });
 
@@ -347,7 +364,7 @@ App.Channel.reopenClass({
     ]
 });
 
-App.ChannelName.reopenClass({
+App.Channelname.reopenClass({
     FIXTURES: [
         { id: 201, name: 'xmpp'     },
         { id: 202, name: 'spreed'   },
