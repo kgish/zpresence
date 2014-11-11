@@ -13,6 +13,7 @@ App = Ember.Application.create({
         var channels = App.Channel.FIXTURES;
         d1.setMonth(d1.getMonth() - 1);
 
+        // Between now and one month ago.
         channels.forEach(function(channel){
             channel.modified = new Date(d1.getTime() + Math.random() * (d2.getTime() - d1.getTime()));
         });
@@ -251,7 +252,8 @@ App.ChannelsCreateController = Ember.ObjectController.extend({
                 id: id,
                 name: name,
                 status: status,
-                message: message
+                message: message,
+                modified: new Date()
             });
 
             // PUT => /users/user_id/channel/create
@@ -285,6 +287,7 @@ App.ChannelEditController = Ember.ObjectController.extend({
     actions: {
         save: function(){
             var channel = this.get('model');
+            channel.set('modified', new Date());
             this.transitionToRoute('user', channel.get('user'));
         },
         cancel: function(){
@@ -321,10 +324,10 @@ App.ChannelName = DS.Model.extend({
 /** FIXTURES **/
 App.User.reopenClass({
     FIXTURES: [
-        { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [101, 102] },
+        { id: 1, name: 'Guido van Rossum',  email: 'guido@psf.org',        channels: [101, 102]      },
         { id: 2, name: 'Richard Stallman',  email: 'rms@gnu.org',          channels: [103, 104, 108] },
-        { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [105]     },
-        { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [106, 107] }
+        { id: 3, name: 'Mark Dufour',       email: 'm.dufour@zarafa.com',  channels: [105]           },
+        { id: 4, name: 'Kiffin Gish',       email: 'k.gish@zarafa.com',    channels: [106, 107]      }
     ]
 });
 
@@ -360,10 +363,7 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
 });
 
 Ember.Handlebars.helper('fromnow', function(context) {
-  console.log("time: " + context);
     var dd = ""+context;
-    var ss = dd.slice(4,25);
-    return ss;
-//    var mm = new moment(ss,["YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss"]);
-//  return aMomentInTime.format("ddd, h:mmA");
+    var ss = dd.slice(4,24); // => Nov 11 2014 08:52:16
+    return new moment(ss,"MMM DD YYYY hh:mm:ss").fromNow();
 });
