@@ -76,7 +76,7 @@
                             <button type="button" class="btn btn-default btn-xs" title="Delete this user" {{action "deleteUser" user}}>
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
-                            <span class="badge">{{channelsCount}}</span>
+                            <span class="badge">{{user.channels.length}}</span>
                                 {{user.name}}
                         {{/link-to}}
                     {{else}}

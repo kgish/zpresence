@@ -257,7 +257,6 @@ App.ChannelsCreateController = Ember.ObjectController.extend({
             });
 
             // PUT => /users/user_id/channel/create
-            channel.save();
             user.get('channels').pushObject(channel);
             user.save();
 
