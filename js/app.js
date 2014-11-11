@@ -198,12 +198,16 @@ App.UsersCreateController = Ember.ObjectController.extend({
             user.save();
 
             // Clear out the values for next time
-            this.set('name', null);
-            this.set('email', null);
+            this.set('userName', null);
+            this.set('userEmail', null);
 
             this.transitionToRoute('users');
         },
         cancel: function(){
+            // Clear out the values for next time
+            this.set('userName', null);
+            this.set('userEmail', null);
+
             this.transitionToRoute('users');
         }
     }
