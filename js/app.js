@@ -20,6 +20,12 @@ App = Ember.Application.create({
     }
 });
 
+App.invalidEmail = function(email) {
+    return (email == null ||
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)==false);
+};
+
+
 App.ApplicationAdapter = DS.FixtureAdapter;
 
 /** ROUTER **/
@@ -154,21 +160,19 @@ App.UserController = Ember.ObjectController.extend({
 });
 
 App.UserEditController = Ember.ObjectController.extend({
-    // TODO: define helper function validEmail.
-    re : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     actions: {
         save: function(){
             var user = this.get('model');
             var name = user.get('name'),
                 email = user.get('email');
 
-            if (name == null || name.length == 0) {
+            if (Ember.empty(name)) {
                 alert('Please enter a valid name.');
                 user.rollback();
                 return false;
             }
 
-            if (email == null || !this.re.test(email)) {
+            if (App.invalidEmail(email)) {
                 alert('Please enter a valid email.');
                 user.rollback();
                 return false;
@@ -185,8 +189,6 @@ App.UserEditController = Ember.ObjectController.extend({
 });
 
 App.UsersCreateController = Ember.ObjectController.extend({
-    // TODO: define helper function validEmail.
-    re : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     userName: null,
     userEmail: null,
 
@@ -195,12 +197,12 @@ App.UsersCreateController = Ember.ObjectController.extend({
             var name = this.get('userName'),
                 email = this.get('userEmail');
 
-            if (name == null || name.length == 0) {
+            if (Ember.empty(name)) {
                 alert('Please enter a valid name.');
                 return false;
             }
 
-            if (email == null || !this.re.test(email)) {
+            if (App.invalidEmail(email)) {
                 alert('Please enter a valid email.');
                 return false;
             }
@@ -340,6 +342,10 @@ App.Channelname = DS.Model.extend({
     name: DS.attr('string')
 });
 
+App.Statusname = DS.Model.extend({
+    name: DS.attr('string')
+});
+
 
 /** FIXTURES **/
 App.User.reopenClass({
@@ -375,6 +381,23 @@ App.Channelname.reopenClass({
         { id: 207, name: 'whatsapp' }
     ]
 });
+
+App.Statusname.reopenClass({
+    FIXTURES: [
+        { id: 301, name: 'online'    },
+        { id: 302, name: 'available' },
+        { id: 303, name: 'away'      },
+        { id: 304, name: 'busy'      },
+        { id: 305, name: 'blocked'   },
+        { id: 306, name: 'offline'   },
+        { id: 307, name: 'green'     },
+        { id: 308, name: 'yellow'    },
+        { id: 309, name: 'red'       },
+        { id: 310, name: 'grey'      },
+        { id: 311, name: 'unknown'   }
+    ]
+});
+//statusList : ['online','available','away','busy','blocked','offline','green','yellow','red','grey','unknown'],
 
 /** HANDLEBARS HELPERS **/
 Ember.Handlebars.helper('fromnow', function(context) {
