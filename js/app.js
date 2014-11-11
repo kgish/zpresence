@@ -356,13 +356,8 @@ App.ChannelName.reopenClass({
 });
 
 /** HANDLEBARS HELPERS **/
-// usage: {{pluralize collection.length 'quiz' 'quizzes'}}
-Handlebars.registerHelper('pluralize', function(number, single, plural) {
-    return (number === 1) ? single : plural;
-});
-
 Ember.Handlebars.helper('fromnow', function(context) {
     var dd = ""+context;
     var ss = dd.slice(4,24); // => Nov 11 2014 08:52:16
-    return new moment(ss,"MMM DD YYYY hh:mm:ss").fromNow();
+    return new moment(ss,"MMM DD YYYY hh:mm:ss").fromNow(true);
 });

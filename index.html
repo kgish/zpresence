@@ -110,17 +110,17 @@
                     </div>
                     {{#each channel in channels}}
                         {{#link-to 'channel.edit' channel class="list-group-item"}}
-                            <button type="button" class="btn btn-default btn-xs" title="Delete this channel" {{action "deleteChannel" channel}}>
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                            {{channel.name}}
-                            <span {{bind-attr class=":label channel.status"}}>{{channel.status}}</span>
-                            {{#if channel.message}}
-                                {{channel.message}}
-                            {{else}}
-                                [No message]
-                            {{/if}}
-                            ( {{fromnow channel.modified}} )
+                                <button type="button" class="btn btn-default btn-xs" title="Delete this channel" {{action "deleteChannel" channel}}>
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                {{channel.name}}
+                                <span {{bind-attr class=":label channel.status"}}>{{channel.status}}</span>
+                                {{#if channel.message}}
+                                    {{channel.message}}
+                                {{else}}
+                                    No message
+                                {{/if}}
+                                <span class="badge">{{fromnow channel.modified}}</span>
                         {{/link-to}}
                     {{else}}
                         <div class="list-group-item">
